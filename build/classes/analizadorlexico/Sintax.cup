@@ -16,7 +16,7 @@ parser code
 }
 :};
 
-terminal Linea,
+terminal Linea,Symbol ,
     Comillas, Parentesis_a, Parentesis_c, Llave_a, Llave_c, Corchete_a, 
     Corchete_c, Coma, P_coma, Num, Cadena, Bool, Ecuacion, 
     Mostrar, ResolverSistema, Inicio, Fin, If, Else, While, For, Igual, Suma,

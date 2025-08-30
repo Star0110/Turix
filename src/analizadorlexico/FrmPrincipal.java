@@ -96,7 +96,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     }
     
-   private void analizarSin() {
+ private void analizarSin() {
     String ST = txtResultado.getText();
     Sintax s = new Sintax(new analizadorlexico.LexerCup(new StringReader(ST)));
 
@@ -105,13 +105,17 @@ public class FrmPrincipal extends javax.swing.JFrame {
         s.parse();
 
         if (Errores.hayErrores()) {
-            Symbol sym = s.getS(); // token donde ocurrió el error
-            String mensaje = "Error de sintaxis: Línea " + (sym.right + 1) +
-                             ", Columna " + (sym.left + 1) +
-                             ", Texto: \"" + sym.value + "\"\n" +
-                             "Se esperaba: " + Errores.getErrores();
+            StringBuilder sb = new StringBuilder();
+            Symbol sym = s.getS(); // último token leído antes del error
 
-            txtAnalizarSin.setText(mensaje);
+            for (String mensaje : Errores.getErrores()) {
+                sb.append("Error de sintaxis: Línea " + (sym.right + 1) +
+                          ", Columna " + (sym.left + 1) +
+                          ", Texto: \"" + sym.value + "\"\n" +
+                          "Se esperaba: " + mensaje + "\n\n");
+            }
+
+            txtAnalizarSin.setText(sb.toString());
             txtAnalizarSin.setForeground(Color.red);
         } else {
             txtAnalizarSin.setText("Análisis realizado correctamente ✅");
@@ -123,6 +127,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
         txtAnalizarSin.setForeground(Color.red);
     }
 }
+
+
+
+
+
+
+
 
 
 

@@ -20,6 +20,7 @@ OPERADORES = ">"|"<"|"=="|"!="|">="|"<="|"and"|"or"|"not"|"++"|"--"|"true"|"fals
     private Symbol symbol(int type){
         return new Symbol(type, yyline, yycolumn);
     }
+    
 %}
 %%
 
