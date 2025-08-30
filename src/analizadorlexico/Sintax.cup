@@ -1,6 +1,7 @@
 package analizadorlexico;
 
 import java_cup.runtime.Symbol;
+import analizadorlexico.Errores;
 
 parser code
 {:
@@ -32,7 +33,10 @@ precedence left Multiplicacion;
 start with INICIO;
 
 INICIO ::= 
-    Inicio  Llave_a Linea SENTENCIA Llave_c Fin
+    Inicio  Llave_a Linea SENTENCIA Llave_c Fin |
+    Inicio Llave_a Linea SENTENCIA Llave_c error{: 
+           Errores.add("FIN");
+         :}
 ;
 
 SENTENCIA  ::= 
@@ -51,11 +55,15 @@ SENTENCIA  ::=
 ;
 DECLARACION ::= 
     Num Identificador Linea | 
+    
     Num Identificador Igual Corchete_a LISTA_NUMEROS Corchete_c Linea|
     Num Identificador Igual OPERACION Linea |
 
     Bool Identificador Linea | 
     Bool Identificador Igual Op_booleano Linea|
+Bool error Igual Op_booleano Linea {: 
+           Errores.add("Identificador despues de Bool");
+         :} |
 
 
     Cadena Identificador Linea|

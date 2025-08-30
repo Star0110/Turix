@@ -96,20 +96,36 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     }
     
-    private void analizarSin(){
-        String ST = txtResultado.getText();
-        Sintax s = new Sintax(new analizadorlexico.LexerCup(new StringReader(ST)));
-        
-        try {
-            s.parse();
-            txtAnalizarSin.setText("Analisis realizado correctamente");
-            txtAnalizarSin.setForeground(new Color(25, 111, 61));
-        } catch (Exception ex) {
-            Symbol sym = s.getS();
-            txtAnalizarSin.setText("Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1) + ", Texto: \"" + sym.value + "\"");
+   private void analizarSin() {
+    String ST = txtResultado.getText();
+    Sintax s = new Sintax(new analizadorlexico.LexerCup(new StringReader(ST)));
+
+    try {
+        Errores.limpiar();
+        s.parse();
+
+        if (Errores.hayErrores()) {
+            Symbol sym = s.getS(); // token donde ocurrió el error
+            String mensaje = "Error de sintaxis: Línea " + (sym.right + 1) +
+                             ", Columna " + (sym.left + 1) +
+                             ", Texto: \"" + sym.value + "\"\n" +
+                             "Se esperaba: " + Errores.getErrores();
+
+            txtAnalizarSin.setText(mensaje);
             txtAnalizarSin.setForeground(Color.red);
+        } else {
+            txtAnalizarSin.setText("Análisis realizado correctamente ✅");
+            txtAnalizarSin.setForeground(new Color(25, 111, 61));
         }
+
+    } catch (Exception ex) {
+        txtAnalizarSin.setText("Error interno en el analizador: " + ex.getMessage());
+        txtAnalizarSin.setForeground(Color.red);
     }
+}
+
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
