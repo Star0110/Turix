@@ -110,15 +110,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
             for (String mensaje : Errores.getErrores()) {
                 sb.append(mensaje).append("\n");
             }
-
+           
             txtAnalizarSin.setText(sb.toString());
             txtAnalizarSin.setForeground(Color.red);
+            
         } else {
             txtAnalizarSin.setText("Análisis realizado correctamente ");
             txtAnalizarSin.setForeground(new Color(25, 111, 61));
+            
         }
-
+        
     } catch (Exception ex) {
+        
         txtAnalizarSin.setText("Error interno en el analizador: " + ex.getMessage());
         txtAnalizarSin.setForeground(Color.red);
     }
