@@ -106,19 +106,15 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         if (Errores.hayErrores()) {
             StringBuilder sb = new StringBuilder();
-            Symbol sym = s.getS(); // último token leído antes del error
 
             for (String mensaje : Errores.getErrores()) {
-                sb.append("Error de sintaxis: Línea " + (sym.right + 1) +
-                          ", Columna " + (sym.left + 1) +
-                          ", Texto: \"" + sym.value + "\"\n" +
-                          "Se esperaba: " + mensaje + "\n\n");
+                sb.append(mensaje).append("\n");
             }
 
             txtAnalizarSin.setText(sb.toString());
             txtAnalizarSin.setForeground(Color.red);
         } else {
-            txtAnalizarSin.setText("Análisis realizado correctamente ✅");
+            txtAnalizarSin.setText("Análisis realizado correctamente ");
             txtAnalizarSin.setForeground(new Color(25, 111, 61));
         }
 
@@ -127,12 +123,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
         txtAnalizarSin.setForeground(Color.red);
     }
 }
-
-
-
-
-
-
 
 
 
