@@ -1,13 +1,22 @@
 package analizadorlexico;
 
 import java_cup.runtime.Symbol;
+import analizadorlexico.Errores;
 
 parser code
 {:
     private Symbol s;
     
-    public void syntax_error(Symbol s){
-        this.s = s;
+    public void syntax_error(java_cup.runtime.Symbol cur_token){
+        // CUP ya tiene las posiciones exactas en cur_token.left y cur_token.right
+        int linea = cur_token.right + 1;   // columna final del token
+        int columna = cur_token.left + 1;  // columna inicial del token
+        String lexema = (cur_token.value != null) ? cur_token.value.toString() : "EOF";
+
+        // CUP construye el mensaje listo en texto
+        Errores.add("Error de sintaxis: Línea " + linea +
+                    ", Columna " + columna +
+                    ", Texto: \"" + lexema + "\"");
     }
 
     public Symbol getS(){
@@ -15,7 +24,7 @@ parser code
 }
 :};
 
-terminal Linea,
+terminal Linea,Symbol ,
     Comillas, Parentesis_a, Parentesis_c, Llave_a, Llave_c, Corchete_a, 
     Corchete_c, Coma, P_coma, Num, Cadena, Bool, Ecuacion, 
     Mostrar, ResolverSistema, Inicio, Fin, If, Else, While, For, Igual, Suma,
@@ -32,7 +41,10 @@ precedence left Multiplicacion;
 start with INICIO;
 
 INICIO ::= 
-    Inicio  Llave_a Linea SENTENCIA Llave_c Fin
+    Inicio  Llave_a Linea SENTENCIA Llave_c Fin |
+    Inicio Llave_a Linea SENTENCIA Llave_c error{: 
+           Errores.add("Se esperaba Fin despues del corchete \n");
+         :}
 ;
 
 SENTENCIA  ::= 
@@ -51,11 +63,15 @@ SENTENCIA  ::=
 ;
 DECLARACION ::= 
     Num Identificador Linea | 
+    
     Num Identificador Igual Corchete_a LISTA_NUMEROS Corchete_c Linea|
     Num Identificador Igual OPERACION Linea |
 
     Bool Identificador Linea | 
     Bool Identificador Igual Op_booleano Linea|
+Bool error Igual Op_booleano Linea {: 
+           Errores.add("Se esperaba un identificador despues de Bool\n");
+         :} |
 
 
     Cadena Identificador Linea|
