@@ -45,6 +45,7 @@ INICIO ::=
     Inicio Llave_a Linea SENTENCIA Llave_c error{: 
            Errores.add("Se esperaba Fin despues del corchete \n");
          :}
+    
 ;
 
 SENTENCIA  ::= 
@@ -177,6 +178,9 @@ MOSTRAR::=
 
 MENSAJE ::=
     Comillas Identificador Comillas |
+    Comillas Identificador error {: 
+           Errores.add("True \n");
+         :} |
     Comillas Identificador Comillas Concatenacion EXPRESION_MENSAJES|   
     Identificador Concatenacion EXPRESION_MENSAJES
 ;

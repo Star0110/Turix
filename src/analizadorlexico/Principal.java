@@ -18,9 +18,9 @@ public class Principal {
     
     public static void main(String[] args) throws Exception {
         
-        String ruta1="C:/Users/stare/OneDrive/Documentos/NetBeansProjects/Turix/src/analizadorlexico/Lexer.flex";
-        String ruta2="C:/Users/stare/OneDrive/Documentos/NetBeansProjects/Turix/src/analizadorlexico/LexerCup.flex";
-        String[] rutaS={"-parser", "Sintax", "C:/Users/stare/OneDrive/Documentos/NetBeansProjects/Turix/src/analizadorlexico/Sintax.cup"};
+        String ruta1="src/analizadorlexico/Lexer.flex";
+        String ruta2="src/analizadorlexico/LexerCup.flex";
+        String[] rutaS={"-parser", "Sintax", "src/analizadorlexico/Sintax.cup"};
         generar(ruta1,ruta2,rutaS);
         
         
@@ -33,20 +33,20 @@ public class Principal {
         JFlex.Main.generate(archivo);
         java_cup.Main.main(rutaS);
         
-        Path rutaSym=Paths.get("C:/Users/stare/OneDrive/Documentos/NetBeansProjects/Turix/src/analizadorlexico/sym.java");
+        Path rutaSym=Paths.get("src/analizadorlexico/sym.java");
         
        if(Files.exists(rutaSym)){
            Files.delete(rutaSym);
        }
-        Files.move(Paths.get("C:/Users/stare/OneDrive/Documentos/NetBeansProjects/Turix/sym.java"),
-                Paths.get("C:/Users/stare/OneDrive/Documentos/NetBeansProjects/Turix/src/analizadorlexico/sym.java"));
+        Files.move(Paths.get("sym.java"),
+                Paths.get("src/analizadorlexico/sym.java"));
         
-        Path rutaSin=Paths.get("C:/Users/stare/OneDrive/Documentos/NetBeansProjects/Turix/src/analizadorlexico/Sintax.java");
+        Path rutaSin=Paths.get("src/analizadorlexico/Sintax.java");
         if(Files.exists(rutaSin)){
            Files.delete(rutaSin);
        }
         
-        Files.move(Paths.get("C:/Users/stare/OneDrive/Documentos/NetBeansProjects/Turix/Sintax.java"),
-                Paths.get("C:/Users/stare/OneDrive/Documentos/NetBeansProjects/Turix/src/analizadorlexico/Sintax.java"));
+        Files.move(Paths.get("Sintax.java"),
+                Paths.get("src/analizadorlexico/Sintax.java"));
     }
 }
