@@ -96,7 +96,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     }
     
-private void analizarSin() {
+ private void analizarSin() {
     String ST = txtResultado.getText();
     Sintax s = new Sintax(new analizadorlexico.LexerCup(new StringReader(ST)));
 
@@ -108,45 +108,24 @@ private void analizarSin() {
             StringBuilder sb = new StringBuilder();
 
             for (String mensaje : Errores.getErrores()) {
-                int linea = -1;
-
-                // Intentamos extraer la línea si el mensaje la tiene
-                if (mensaje.matches("Línea \\d+: .*")) {
-                    linea = Integer.parseInt(mensaje.split(":")[0].replace("Línea ", "").trim());
-                } else {
-                    // Si no tiene línea, buscamos la posición de la "palabra clave" en el texto
-                    String palabra = mensaje.split(" ")[0]; // asumimos que la primera palabra es la que falla
-                    int index = ST.indexOf(palabra);
-
-                    if (index != -1) {
-                        try {
-                            linea = txtResultado.getLineOfOffset(index) + 1; // +1 porque empieza en 0
-                        } catch (Exception ex) {
-                            linea = -1;
-                        }
-                    }
-                }
-
-                if (linea != -1)
-                    sb.append("Línea ").append(linea).append(": ").append(mensaje).append("\n");
-                else
-                    sb.append(mensaje).append("\n");
+                sb.append(mensaje).append("\n");
             }
-
+           
             txtAnalizarSin.setText(sb.toString());
             txtAnalizarSin.setForeground(Color.red);
-
+            
         } else {
-            txtAnalizarSin.setText("Análisis realizado correctamente");
+            txtAnalizarSin.setText("Análisis realizado correctamente ");
             txtAnalizarSin.setForeground(new Color(25, 111, 61));
+            
         }
-
+        
     } catch (Exception ex) {
+        
         txtAnalizarSin.setText("Error interno en el analizador: " + ex.getMessage());
         txtAnalizarSin.setForeground(Color.red);
     }
 }
-
 
 
 
