@@ -43,10 +43,16 @@ start with INICIO;
 INICIO ::= 
     Inicio  Llave_a Linea SENTENCIA Llave_c Fin |
     Inicio Llave_a Linea SENTENCIA Llave_c error{: 
-           Errores.add("Se esperaba Fin despues del corchete \n");
-         :}
-    
-;
+           Errores.add("Se esperaba Fin despues de } \n"); 
+         :} |
+    Inicio error Linea SENTENCIA Llave_c Fin{: 
+            Errores.add("Se esperaba { despues de Inicio \n");
+          :}|
+     Inicio Llave_a Linea error Fin{: 
+            Errores.add("Se esperaba } despues de la sentencia \n");
+          :}  
+ ;
+
 
 SENTENCIA  ::= 
     SENTENCIA DECLARACION |
@@ -60,37 +66,146 @@ SENTENCIA  ::=
     SENTENCIA FOR |
     FOR |
     SENTENCIA_SIMPLE |
-    MOSTRAR
+    MOSTRAR |
+    error Linea{: 
+           Errores.add("Sentencia incorrecta \n");
+         :}
 ;
 DECLARACION ::= 
     Num Identificador Linea | 
+    Num Identificador error Linea{: 
+           Errores.add("Acabado incorrecto de declaracion \n");
+         :}| 
     
     Num Identificador Igual Corchete_a LISTA_NUMEROS Corchete_c Linea|
-    Num Identificador Igual OPERACION Linea |
+    Num error Igual Corchete_a LISTA_NUMEROS Corchete_c Linea{: 
+           Errores.add("Se esperaba identificador despues de Num \n");
+         :}|
+    Num Identificador error Corchete_a LISTA_NUMEROS Corchete_c Linea{: 
+           Errores.add("Se esperaba = despues de identificador \n");
+         :}|
+   Num Identificador Igual error LISTA_NUMEROS Corchete_c Linea{: 
+           Errores.add("Se esperaba [ despues de = \n");
+         :}|    
+    Num Identificador Igual Corchete_a LISTA_NUMEROS Corchete_c error Linea{: 
+           Errores.add("Acabado incorrecto de declaracion \n");
+         :}|
+    Num Identificador Igual Corchete_a LISTA_NUMEROS Linea {: 
+           Errores.add("ERROR:No hubo cierre de corchete \n");
+         :}|
 
-    Bool Identificador Linea | 
-    Bool Identificador Igual Op_booleano Linea|
-Bool error Igual Op_booleano Linea {: 
+    Num Identificador Igual OPERACION Linea |
+    Num error Igual OPERACION Linea {: 
+           Errores.add("Se esperaba Identificador despues de Num \n");
+         :}|
+    Num Identificador error OPERACION Linea {: 
+           Errores.add("Se esperaba = despues de Identificador \n");
+         :}|
+    Num Identificador Igual OPERACION error Linea {: 
+           Errores.add("Acabado incorrecto de declaracion\n");
+         :}|
+
+    Bool Identificador Linea |
+    Bool Identificador error Linea{: 
+           Errores.add("Acabado incorrecto de declaracion \n");
+         :}|
+    
+     Bool Identificador Igual Op_booleano Linea|
+     Bool error Igual Op_booleano Linea {: 
            Errores.add("Se esperaba un identificador despues de Bool\n");
          :} |
-
-
-    Cadena Identificador Linea|
-    Cadena Identificador Igual Comillas Comillas Linea |
-    Cadena Identificador Igual Comillas Identificador Comillas Linea|
+    Bool Identificador error Op_booleano Linea {: 
+           Errores.add("Se esperaba un = despues de Identificador\n");
+         :} |
+    Bool Identificador Igual error Linea {: 
+           Errores.add("Se esperaba un Operador booleano despues de = \n");
+         :} |
+    Bool Identificador Igual Op_booleano error Linea {: 
+           Errores.add("Acabado incorrecto de declaracion \n");
+         :} |
     
-    Cadena Identificador Igual RESOLVER Linea |
-    Cadena Identificador Igual ECUACION Linea
+    Cadena Identificador Linea|
+    Cadena Identificador error Linea {: 
+           Errores.add("Acabado incorrecto de declaracion \n");
+         :} |
+
+    Cadena Identificador Igual Comillas Comillas Linea |
+    Cadena error Igual Comillas Comillas Linea {: 
+           Errores.add("Se esperaba identificador despues de Cadena \n");
+         :} |
+    Cadena Identificador error Comillas Comillas Linea {: 
+           Errores.add("Se esperaba = despues de Identificador \n");
+         :} |
+    Cadena Identificador Igual error Comillas Linea {: 
+           Errores.add("Se esperaba Comillas despues de = \n");
+         :} |
+    Cadena Identificador Igual Comillas error Linea{: 
+           Errores.add("Se esperaba Comillas despues de Comillas \n");
+         :} |
+    Cadena Identificador Igual Comillas Comillas error Linea{: 
+           Errores.add("Acabado incorrecto de declaracion \n");
+         :} |
+
+    Cadena Identificador Igual Comillas Identificador Comillas Linea|
+    Cadena error Igual Comillas Identificador Comillas Linea{: 
+           Errores.add("Se esperaba Identificador despues de Cadena \n");
+         :} |
+    Cadena Identificador error Comillas Identificador Comillas Linea{: 
+           Errores.add("Se esperaba = despues de Identificador \n");
+         :} |
+    Cadena Identificador Igual error Identificador Comillas Linea{: 
+           Errores.add("Se esperaba Comillas despues de = \n");
+         :} |
+    Cadena Identificador Igual Comillas Identificador error Linea{: 
+           Errores.add("Se esperaba Comillas despues de identificador \n");
+         :} |
+    Cadena Identificador Igual Comillas Identificador Comillas error Linea{: 
+           Errores.add("Acabado incorrecto de declaracion \n");
+         :} |
+
+     Cadena Identificador Igual RESOLVER Linea |
+      Cadena error Igual RESOLVER Linea {: 
+           Errores.add("Se esperaba Identificador despues de Cadena \n");
+         :} |
+    Cadena Identificador error RESOLVER Linea {: 
+           Errores.add("Se esperaba = despues de Identificador \n");
+         :} |
+    Cadena Identificador Igual RESOLVER error Linea {: 
+           Errores.add("Acabado incorrecto de declaracion \n");
+         :} |
+
+    Cadena Identificador Igual ECUACION Linea |
+    Cadena error Igual ECUACION Linea {: 
+           Errores.add("Se esperaba Identificador despues de Cadena \n");
+         :} |
+    Cadena Identificador error ECUACION Linea {: 
+           Errores.add("Se esperaba = despues de Identificador \n");
+         :} |
+    Cadena Identificador Igual ECUACION error Linea {: 
+           Errores.add("Acabado incorrecto de declaracion \n");
+         :} 
+    
 ;
 
+
 LISTA_NUMEROS ::= OPERACION|
-                  OPERACION Coma LISTA_NUMEROS
+                  OPERACION Coma LISTA_NUMEROS 
 ;
 
 
 ECUACION::=
-    Ecuacion Parentesis_a EXPRESION Igual Numero Parentesis_c
+       Ecuacion Parentesis_a EXPRESION Igual Numero Parentesis_c |
+    Ecuacion error EXPRESION Igual Numero Parentesis_c {: 
+           Errores.add("Se esperaba ( despues de Ecuacion \n");
+         :} |
+    Ecuacion Parentesis_a EXPRESION Igual error Parentesis_c{: 
+           Errores.add("Se esperaba un número despues de Igual \n");
+         :} |
+    Ecuacion Parentesis_a EXPRESION Igual Numero error{: 
+           Errores.add("Se esperaba ( despues de Numero \n");
+         :} 
 ;
+
 
 EXPRESION ::= EXPRESION Suma Numero Identificador|
               EXPRESION Resta Numero Identificador|
