@@ -102,10 +102,31 @@ TERMINO ::= Numero|
 
 OPERACION ::=
     OPERACION Suma OPERACION |
+    OPERACION Suma error {: 
+           Errores.add("Se espera una operacion al final \n");
+         :} |
     OPERACION Resta OPERACION |
+    OPERACION Resta error {: 
+           Errores.add("Se espera una operacion al final \n");
+         :}|
     OPERACION Multiplicacion OPERACION |
-    Parentesis_a OPERACION Parentesis_c|
+    OPERACION Multiplicacion error {: 
+           Errores.add("Se espera una operacion al final \n");
+         :}|
+    Parentesis_a OPERACION Parentesis_c |
+    Parentesis_a OPERACION error{: 
+           Errores.add("Se espera un parentesis al final \n");
+         :}|
+    Parentesis_a error Parentesis_c{: 
+           Errores.add("Se espera una operacion entre los parentesis \n");
+         :}|
     Llave_a OPERACION Llave_c |
+    Llave_a OPERACION error {: 
+           Errores.add("Se espera una llave al final \n");
+         :}|
+    Llave_a error Llave_c {: 
+           Errores.add("Se espera una operacion entre las llaves \n");
+         :}|
     TERMINO
 ;
 
