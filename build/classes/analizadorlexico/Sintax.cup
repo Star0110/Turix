@@ -132,7 +132,19 @@ OPERACION ::=
 
 
 
-IF ::= If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a Linea SENTENCIA Llave_c Linea
+IF ::= 
+    If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a Linea SENTENCIA Llave_c Linea|
+    If Parentesis_a error Parentesis_c Llave_a Linea SENTENCIA Llave_c Linea {: 
+           Errores.add("Se espera una condicion entre los parentesis \n");
+         :}|
+    If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c error Linea SENTENCIA Llave_c Linea {: 
+           Errores.add("Se espera una llave despues del ultimo parentesis \n");
+         :}|
+    If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a Linea error Llave_c Linea {: 
+           Errores.add("Se espera una sentencia entre las llaves \n");
+         :}
+    
+
 ;
 
 SENTENCIA_BOOLEANA ::= 
