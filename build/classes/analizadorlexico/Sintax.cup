@@ -149,7 +149,10 @@ IF ::=
 
 SENTENCIA_BOOLEANA ::= 
     Op_booleano | 
-    Identificador Op_relacional Op_booleano |
+    Identificador Op_relacional Op_booleano| 
+    Identificador Op_relacional error {: 
+           Errores.add("Se espera un operador al final \n");
+         :}| 
     Identificador Op_relacional Numero |
     Identificador Op_relacional Identificador |
     Identificador Op_relacional Comillas Comillas |
